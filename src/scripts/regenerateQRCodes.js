@@ -1,7 +1,22 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 const Employee = require('../models/Employee');
-const { generateQR } = require('../utils/qrGenerator');
+const QRCode = require('qrcode');
+
+// Directly generate QR with Vercel URL instead of using the utility function
+async function generateQRWithVercelURL(employeeId) {
+  try {
+    // Hardcode the Vercel URL here to ensure it's correct
+    const url = `https://eqsrm-frontend-oqp1.vercel.app/employee/${employeeId}`;
+    
+    // Generate QR code as data URL
+    const qrCodeDataURL = await QRCode.toDataURL(url);
+    return qrCodeDataURL;
+  } catch (error) {
+    console.error('QR Code generation error:', error);
+    throw new Error('Failed to generate QR code');
+  }
+}
 
 async function regenerateAllQRCodes() {
   try {
@@ -15,7 +30,8 @@ async function regenerateAllQRCodes() {
     
     // Update each employee's QR code
     for (const employee of employees) {
-      const newQRCode = await generateQR(employee.employeeId);
+      // Use the hardcoded URL generator instead
+      const newQRCode = await generateQRWithVercelURL(employee.employeeId);
       employee.qrCode = newQRCode;
       await employee.save();
       console.log(`Updated QR code for employee ${employee.name} (${employee.employeeId})`);
