@@ -24,7 +24,7 @@ async function regenerateAllQRCodes() {
     // Update each employee's QR code
     for (const employee of employees) {
       // Hardcode the Vercel URL to ensure it's correct
-      const url = `https://eqsrm-frontend-oqp1-git-main-adeebs-projects-3dd01d17.vercel.app/employee/${employee.employeeId}`;
+      const url = `https://eqsrm-frontend.vercel.app/employee/${employee.employeeId}`;
       console.log(`Generating QR for ${employee.name} (${employee.employeeId}) with URL: ${url}`);
       
       const qrCodeDataURL = await QRCode.toDataURL(url);
